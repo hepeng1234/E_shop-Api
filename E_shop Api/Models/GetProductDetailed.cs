@@ -16,7 +16,7 @@ namespace E_shop_Api.Models
         public int Id { get; set; }
         public string InfoSrc { get; set; }
         public List<string> ProductCarousel1 { get; set; }
-        public static GetProductDetailed GetProductDetailedFun(string sql,string sql1, string sql2,DataTable dataTable)
+        public static GetProductDetailed GetProductDetailedFun(string sql, string sql1, string sql2, DataTable dataTable)
         {
             DataTable dt1 = SqlHelper.GetSum(sql, dataTable);
 
@@ -25,21 +25,53 @@ namespace E_shop_Api.Models
 
 
             DataTable dt = SqlHelper.GetSum(sql2, dataTable);
-            GetProductInfo getProductInfo = new GetProductInfo
+
+            GetProductInfo getProductInfo;
+            if (dt.Rows.Count > 0)
             {
-                Id = (int)dt.Rows[0]["Id"],
-                Msg = dt.Rows[0]["Msg"].ToString(),
-                PictureUrl = dt.Rows[0]["PictureUrl"].ToString(),
-                NewPrice = dt.Rows[0]["NewPrice"].ToString(),
-                OldPrice = dt.Rows[0]["OldPrice"].ToString(),
-            };
-            GetProductDetailed getProductDetailed = new GetProductDetailed
+                getProductInfo = new GetProductInfo
+                {
+                    Id = (int)dt.Rows[0]["Id"],
+                    Msg = dt.Rows[0]["Msg"].ToString(),
+                    PictureUrl = dt.Rows[0]["PictureUrl"].ToString(),
+                    NewPrice = dt.Rows[0]["NewPrice"].ToString(),
+                    OldPrice = dt.Rows[0]["OldPrice"].ToString()
+                };
+            }
+            else
             {
-                GetProductInfo = getProductInfo,
-                ProductCarousel1 = ListProductCarousel,
-                Id = (int)dt1.Rows[0]["Id"],
-                InfoSrc = dt1.Rows[0]["InfoSrc"].ToString()
-            };
+                getProductInfo = new GetProductInfo
+                {
+                    Id = 0,
+                    Msg = "",
+                    PictureUrl = "",
+                    NewPrice = "",
+                    OldPrice = ""
+                };
+            }
+
+            GetProductDetailed getProductDetailed;
+            if (dt1.Rows.Count > 0)
+            {
+                getProductDetailed = new GetProductDetailed
+                {
+                    GetProductInfo = getProductInfo,
+                    ProductCarousel1 = ListProductCarousel,
+                    Id = (int)dt1.Rows[0]["Id"],
+                    InfoSrc = dt1.Rows[0]["InfoSrc"].ToString()
+                };
+            }
+            else
+            {
+                getProductDetailed = new GetProductDetailed
+                {
+                    GetProductInfo = getProductInfo,
+                    ProductCarousel1 = ListProductCarousel,
+                    Id = 0,
+                    InfoSrc = ""
+                };
+            }
+
             return getProductDetailed;
         }
     }
@@ -49,9 +81,13 @@ namespace E_shop_Api.Models
         {
             List<string> Vs = new List<string>();
             DataTable dt = SqlHelper.GetSum(sql, dataTable);
-            for (int i = 0; i < dt.Rows.Count; i++)
+            if (dt.Rows.Count > 0)
             {
-                Vs.Add(dt.Rows[i]["ProductCarousel"].ToString());
+                Vs.Add(dt.Rows[0]["ProductCarousel"].ToString());
+            }
+            else
+            {
+                Vs.Add("");
             }
             return Vs;
         }

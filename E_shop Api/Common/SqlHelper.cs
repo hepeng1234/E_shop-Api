@@ -6,15 +6,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Data;
+using E_shop_Api.Controllers;
 
 namespace E_shop_Api.Common
 {
-    [EnableCors("any")]
-    [Route("api/[controller]/[action]")]
-    [ApiController]
-    public class SqlHelper: ControllerBase
+    public class SqlHelper
     {
-        public static string ConnStr { get; set; }
         /// <summary>
         /// 没有条件，直接返回所有数据
         /// </summary>
@@ -22,7 +19,7 @@ namespace E_shop_Api.Common
         /// <returns></returns>
         public static DataTable ExecuteTable(string sql)
         {
-            using (MySqlConnection conn=new MySqlConnection(ConnStr))
+            using (MySqlConnection conn=new MySqlConnection(MainClass.ConnStr))
             {
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 MySqlDataAdapter da = new MySqlDataAdapter(cmd);
@@ -39,7 +36,7 @@ namespace E_shop_Api.Common
         /// <returns></returns>
         public static DataTable GetSum(string sql,DataTable dataTable)
         {
-            using (MySqlConnection conn = new MySqlConnection(ConnStr))
+            using (MySqlConnection conn = new MySqlConnection(MainClass.ConnStr))
             {
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
 
@@ -61,7 +58,7 @@ namespace E_shop_Api.Common
         /// <returns></returns>
         public static int Count(string sql)
         {
-            using (MySqlConnection conn = new MySqlConnection(ConnStr))
+            using (MySqlConnection conn = new MySqlConnection(MainClass.ConnStr))
             {
                 MySqlCommand cmd = new MySqlCommand(sql, conn);
                 conn.Open();

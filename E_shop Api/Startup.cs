@@ -29,7 +29,7 @@ namespace E_shop_Api
         {
             services.AddControllers();
             var connStr = Configuration.GetSection("ConnStr");
-            Common.SqlHelper.ConnStr = connStr.Value;
+            MainClass.ConnStr = connStr.Value;
             services.AddCors(o => o.AddPolicy("any", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
             services.AddSwaggerGen(c =>

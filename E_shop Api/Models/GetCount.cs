@@ -27,7 +27,7 @@ namespace E_shop_Api.Models
         }
     }
     /// <summary>
-    /// 返回商品数据
+    /// 返回所有商品数据
     /// </summary>
     public class GetProductInfo
     {
@@ -37,55 +37,84 @@ namespace E_shop_Api.Models
         public string NewPrice { get; set; }
         public string OldPrice { get; set; }
         public int ProDetailsId { get; set; }
+        /// <summary>
+        /// 不带条件，返回所有数据
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
         public static List<GetProductInfo> GetProductInfo1(string sql)
         {
             List<GetProductInfo> products = new List<GetProductInfo>();
             DataTable dt = SqlHelper.ExecuteTable(sql);
-            for (int i = 0; i < dt.Rows.Count; i++)
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    products.Add(new GetProductInfo
+                    {
+                        Id = (int)dt.Rows[i]["Id"],
+                        Msg = dt.Rows[i]["Msg"].ToString(),
+                        PictureUrl = dt.Rows[i]["PictureUrl"].ToString(),
+                        NewPrice = dt.Rows[i]["NewPrice"].ToString(),
+                        OldPrice = dt.Rows[i]["OldPrice"].ToString(),
+                        ProDetailsId = PublicFun.Int(dt.Rows[i]["ProDetailsId"])
+                    });
+                }
+            }
+            else
             {
                 products.Add(new GetProductInfo
                 {
-                    Id = (int)dt.Rows[i]["Id"],
-                    Msg = dt.Rows[i]["Msg"].ToString(),
-                    PictureUrl = dt.Rows[i]["PictureUrl"].ToString(),
-                    NewPrice = dt.Rows[i]["NewPrice"].ToString(),
-                    OldPrice = dt.Rows[i]["OldPrice"].ToString(),
-                    ProDetailsId = Int(dt.Rows[i]["ProDetailsId"])
+                    Id = 0,
+                    Msg = "",
+                    PictureUrl = "",
+                    NewPrice = "",
+                    OldPrice = "",
+                    ProDetailsId = 0
                 });
             }
+            
             return products;
         }
+        /// <summary>
+        /// 带条件，返回符合条件的全部数据
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
         public static List<GetProductInfo> GetProductInfo1(string sql, DataTable dataTable)
         {
             List<GetProductInfo> products = new List<GetProductInfo>();
             DataTable dt = SqlHelper.GetSum(sql, dataTable);
-            for (int i = 0; i < dt.Rows.Count; i++)
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    products.Add(new GetProductInfo
+                    {
+                        Id = (int)dt.Rows[i]["Id"],
+                        Msg = dt.Rows[i]["Msg"].ToString(),
+                        PictureUrl = dt.Rows[i]["PictureUrl"].ToString(),
+                        NewPrice = dt.Rows[i]["NewPrice"].ToString(),
+                        OldPrice = dt.Rows[i]["OldPrice"].ToString(),
+                        ProDetailsId = PublicFun.Int(dt.Rows[i]["ProDetailsId"])
+                    });
+                }
+            }
+            else
             {
                 products.Add(new GetProductInfo
                 {
-                    Id = (int)dt.Rows[i]["Id"],
-                    Msg = dt.Rows[i]["Msg"].ToString(),
-                    PictureUrl = dt.Rows[i]["PictureUrl"].ToString(),
-                    NewPrice = dt.Rows[i]["NewPrice"].ToString(),
-                    OldPrice = dt.Rows[i]["OldPrice"].ToString(),
-                    ProDetailsId = Int(dt.Rows[i]["ProDetailsId"])
+                    Id = 0,
+                    Msg = "",
+                    PictureUrl = "",
+                    NewPrice = "",
+                    OldPrice = "",
+                    ProDetailsId = 0
                 });
             }
+            
             return products;
-        }
-        public static int Int(object a)
-        {
-            try
-            {
-                int b = (int)a;
-                if (b > 0)
-                    return b;
-            }
-            catch (Exception ex)
-            {
-                return 0;
-            }
-            return 0;
         }
     }
 }
