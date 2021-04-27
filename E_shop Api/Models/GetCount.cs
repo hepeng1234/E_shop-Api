@@ -1,4 +1,5 @@
 ﻿using E_shop_Api.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,16 +15,16 @@ namespace E_shop_Api.Models
     {
         public int Count { get; set; }
         public List<GetProductInfo> Info { get; set; }
-        public static GetCount GetCounts(string sql,string sql1, DataTable dataTable)
+        public static JsonResult GetCounts(string sql,string sql1, DataTable dataTable)
         {
             List<GetProductInfo> products = GetProductInfo.GetProductInfo1(sql, dataTable);
             int count = SqlHelper.Count(sql1);
-            GetCount getCounts = new GetCount
+            GetCount data = new GetCount
             {
                 Count=count,
                 Info=products
             };
-            return getCounts;
+            return new JsonResult(new { data});
         }
     }
     /// <summary>

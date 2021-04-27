@@ -1,4 +1,5 @@
 ﻿using E_shop_Api.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -16,7 +17,7 @@ namespace E_shop_Api.Models
         public int Id { get; set; }
         public string InfoSrc { get; set; }
         public List<string> ProductCarousel1 { get; set; }
-        public static GetProductDetailed GetProductDetailedFun(string sql, string sql1, string sql2, DataTable dataTable)
+        public static JsonResult GetProductDetailedFun(string sql, string sql1, string sql2, DataTable dataTable)
         {
             DataTable dt1 = SqlHelper.GetSum(sql, dataTable);
 
@@ -31,7 +32,7 @@ namespace E_shop_Api.Models
             {
                 getProductInfo = new GetProductInfo
                 {
-                    Id = (int)dt.Rows[0]["Id"],
+                    Id = PublicFun.Int(dt.Rows[0]["Id"]),
                     Msg = dt.Rows[0]["Msg"].ToString(),
                     PictureUrl = dt.Rows[0]["PictureUrl"].ToString(),
                     NewPrice = dt.Rows[0]["NewPrice"].ToString(),
@@ -50,20 +51,20 @@ namespace E_shop_Api.Models
                 };
             }
 
-            GetProductDetailed getProductDetailed;
+            GetProductDetailed data;
             if (dt1.Rows.Count > 0)
             {
-                getProductDetailed = new GetProductDetailed
+                data = new GetProductDetailed
                 {
                     GetProductInfo = getProductInfo,
                     ProductCarousel1 = ListProductCarousel,
-                    Id = (int)dt1.Rows[0]["Id"],
+                    Id = PublicFun.Int(dt.Rows[0]["Id"]),
                     InfoSrc = dt1.Rows[0]["InfoSrc"].ToString()
                 };
             }
             else
             {
-                getProductDetailed = new GetProductDetailed
+                data = new GetProductDetailed
                 {
                     GetProductInfo = getProductInfo,
                     ProductCarousel1 = ListProductCarousel,
@@ -72,7 +73,7 @@ namespace E_shop_Api.Models
                 };
             }
 
-            return getProductDetailed;
+            return new JsonResult(new { data });
         }
     }
     public static class ProductCarousel

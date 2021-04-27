@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using E_shop_Api.Common;
+using Microsoft.AspNetCore.Mvc;
 
 namespace E_shop_Api.Models
 {
@@ -14,31 +15,31 @@ namespace E_shop_Api.Models
     {
         public int Id { get; set; }
         public string Url { get; set; }
-        public static List<Products> GetProductList(string sql)
+        public static JsonResult GetProductList(string sql)
         {
-            List<Products> products = new List<Products>();
+            List<Products> data = new List<Products>();
             DataTable dt = SqlHelper.ExecuteTable(sql);
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    products.Add(new Products
+                    data.Add(new Products
                     {
-                        Id = (int)dt.Rows[i]["Id"],
+                        Id = PublicFun.Int(dt.Rows[i]["Id"]),
                         Url = dt.Rows[i]["Url"].ToString()
                     });
                 }
             }
             else
             {
-                products.Add(new Products
+                data.Add(new Products
                 {
                     Id = 0,
                     Url = ""
                 });
             }
             
-            return products;
+            return new JsonResult(new { data });
         }
     }
 }

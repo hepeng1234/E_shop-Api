@@ -1,4 +1,5 @@
 ﻿using E_shop_Api.Common;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -17,15 +18,15 @@ namespace E_shop_Api.Models
         public string Url { get; set; }
         public string Time { get; set; }
         public int ContentId { get; set; }
-        public static List<News> GetNews(string sql)
+        public static JsonResult GetNews(string sql)
         {
-            List<News> news = new List<News>();
+            List<News> data = new List<News>();
             DataTable dt = SqlHelper.ExecuteTable(sql);
             if (dt.Rows.Count > 0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    news.Add(new News
+                    data.Add(new News
                     {
                         Id = (int)dt.Rows[i]["Id"],
                         Title = dt.Rows[i]["Title"].ToString(),
@@ -37,7 +38,7 @@ namespace E_shop_Api.Models
             }
             else
             {
-                news.Add(new News
+                data.Add(new News
                 {
                     Id = 0,
                     Title = "",
@@ -46,8 +47,8 @@ namespace E_shop_Api.Models
                     ContentId = 0
                 });
             }
-            
-            return news;
+
+            return new JsonResult(new { data });
         }
     }
     /// <summary>
@@ -57,35 +58,35 @@ namespace E_shop_Api.Models
     {
         public News News1 { get; set; }
         public string Content { get; set; }
-        public static NewDetail GetNewDetailFun(string sql,DataTable dataTable)
+        public static JsonResult GetNewDetailFun(string sql,DataTable dataTable)
         {
-            NewDetail news = new NewDetail();
+            NewDetail data = new NewDetail();
             DataTable dt = SqlHelper.GetSum(sql, dataTable);
 
             if (dt.Rows.Count > 0)
             {
-                news.News1 = new News
+                data.News1 = new News
                 {
                     Id = (int)dt.Rows[0]["Id"],
                     Title = dt.Rows[0]["Title"].ToString(),
                     Time = dt.Rows[0]["Time"].ToString()
                 };
-                news.Content = dt.Rows[0]["Content"].ToString();
+                data.Content = dt.Rows[0]["Content"].ToString();
             }
             else
             {
-                news.News1 = new News
+                data.News1 = new News
                 {
                     Id = 0,
                     Title = "",
                     Url = "",
                     Time = ""
                 };
-                news.Content = "";
+                data.Content = "";
             }
 
-            
-            return news;
+
+            return new JsonResult(new { data });
         }
     }
 }
