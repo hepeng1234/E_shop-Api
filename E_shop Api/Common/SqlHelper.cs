@@ -66,5 +66,23 @@ namespace E_shop_Api.Common
                 return (int)Convert.ToInt64(a);
             }
         }
+        /// <summary>
+        /// 修改或删除某个满足条件的数据
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="dataTable"></param>
+        public static void Set(string sql, DataTable dataTable)
+        {
+            using(MySqlConnection conn=new MySqlConnection(MainClass.ConnStr))
+            {
+                MySqlCommand cmd = new MySqlCommand(sql,conn);
+                foreach (DataRow item in dataTable.Rows)
+                {
+                    cmd.Parameters.AddWithValue(item[0].ToString(), item[1]);
+                }
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
 }

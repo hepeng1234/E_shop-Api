@@ -21,7 +21,6 @@ namespace E_shop_Api
         {
             Configuration = configuration;
         }
-
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -30,7 +29,9 @@ namespace E_shop_Api
             services.AddControllers();
             var connStr = Configuration.GetSection("ConnStr");
             MainClass.ConnStr = connStr.Value;
+
             services.AddCors(o => o.AddPolicy("any", p => p.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+            services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
@@ -58,6 +59,7 @@ namespace E_shop_Api
             app.UseAuthorization();
 
             app.UseCors();
+
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/V1/swagger.json", "ProductsWebApi");

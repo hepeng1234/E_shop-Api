@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace E_shop_Api.Models
 {
     /// <summary>
@@ -15,7 +16,7 @@ namespace E_shop_Api.Models
     {
         public int Count { get; set; }
         public List<GetProductInfo> Info { get; set; }
-        public static JsonResult GetCounts(string sql,string sql1, DataTable dataTable)
+        public static GetCount GetCounts(string sql,string sql1, DataTable dataTable)
         {
             List<GetProductInfo> products = GetProductInfo.GetProductInfo1(sql, dataTable);
             int count = SqlHelper.Count(sql1);
@@ -24,7 +25,7 @@ namespace E_shop_Api.Models
                 Count=count,
                 Info=products
             };
-            return new JsonResult(new { data});
+            return data;
         }
     }
     /// <summary>

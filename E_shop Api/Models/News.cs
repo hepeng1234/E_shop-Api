@@ -18,7 +18,7 @@ namespace E_shop_Api.Models
         public string Url { get; set; }
         public string Time { get; set; }
         public int ContentId { get; set; }
-        public static JsonResult GetNews(string sql)
+        public static List<News> GetNews(string sql)
         {
             List<News> data = new List<News>();
             DataTable dt = SqlHelper.ExecuteTable(sql);
@@ -48,7 +48,7 @@ namespace E_shop_Api.Models
                 });
             }
 
-            return new JsonResult(new { data });
+            return data;
         }
     }
     /// <summary>
@@ -58,7 +58,7 @@ namespace E_shop_Api.Models
     {
         public News News1 { get; set; }
         public string Content { get; set; }
-        public static JsonResult GetNewDetailFun(string sql,DataTable dataTable)
+        public static NewDetail GetNewDetailFun(string sql,DataTable dataTable)
         {
             NewDetail data = new NewDetail();
             DataTable dt = SqlHelper.GetSum(sql, dataTable);
@@ -86,7 +86,7 @@ namespace E_shop_Api.Models
             }
 
 
-            return new JsonResult(new { data });
+            return data;
         }
     }
 }

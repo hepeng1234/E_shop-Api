@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace E_shop_Api.Models
 {
@@ -17,7 +16,7 @@ namespace E_shop_Api.Models
         public int Id { get; set; }
         public string InfoSrc { get; set; }
         public List<string> ProductCarousel1 { get; set; }
-        public static JsonResult GetProductDetailedFun(string sql, string sql1, string sql2, DataTable dataTable)
+        public static GetProductDetailed GetProductDetailedFun(string sql, string sql1, string sql2, DataTable dataTable)
         {
             DataTable dt1 = SqlHelper.GetSum(sql, dataTable);
 
@@ -73,7 +72,7 @@ namespace E_shop_Api.Models
                 };
             }
 
-            return new JsonResult(new { data });
+            return data;
         }
     }
     public static class ProductCarousel

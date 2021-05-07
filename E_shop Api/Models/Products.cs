@@ -15,11 +15,11 @@ namespace E_shop_Api.Models
     {
         public int Id { get; set; }
         public string Url { get; set; }
-        public static JsonResult GetProductList(string sql)
+        public static List<Products> GetProductList(string sql)
         {
             List<Products> data = new List<Products>();
             DataTable dt = SqlHelper.ExecuteTable(sql);
-            if (dt.Rows.Count > 0)
+            if(dt.Rows.Count>0)
             {
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -38,8 +38,7 @@ namespace E_shop_Api.Models
                     Url = ""
                 });
             }
-            
-            return new JsonResult(new { data });
+            return data;
         }
     }
 }

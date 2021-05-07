@@ -15,7 +15,7 @@ namespace E_shop_Api.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
-        public static JsonResult GetNavbarLefts(string sql)
+        public static List<GetNavbarLeft> GetNavbarLefts(string sql)
         {
             List<GetNavbarLeft> data = new List<GetNavbarLeft>();
             DataTable dt = SqlHelper.ExecuteTable(sql);
@@ -38,7 +38,7 @@ namespace E_shop_Api.Models
                     Title = null
                 });
             }
-            return new JsonResult(new { data });
+            return data;
         }
     }
     /// <summary>
@@ -48,7 +48,7 @@ namespace E_shop_Api.Models
     {
         public string PictureUrl { get; set; }
         public string Msg { get; set; }
-        public static JsonResult GetNavbarRights(string sql,DataTable dataTable)
+        public static List<GetNavbarRight> GetNavbarRights(string sql,DataTable dataTable)
         {
             List<GetNavbarRight> data = new List<GetNavbarRight>(); ;
             DataTable dt = SqlHelper.GetSum(sql, dataTable);
@@ -71,7 +71,7 @@ namespace E_shop_Api.Models
                     Msg = null
                 });
             }
-            return new JsonResult(new { data });
+            return data;
         }
     }
 }
