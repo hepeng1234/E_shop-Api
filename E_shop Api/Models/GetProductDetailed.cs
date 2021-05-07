@@ -83,7 +83,10 @@ namespace E_shop_Api.Models
             DataTable dt = SqlHelper.GetSum(sql, dataTable);
             if (dt.Rows.Count > 0)
             {
-                Vs.Add(dt.Rows[0]["ProductCarousel"].ToString());
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    Vs.Add(dt.Rows[i]["ProductCarousel"].ToString());
+                }
             }
             else
             {
