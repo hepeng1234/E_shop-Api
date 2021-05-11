@@ -145,13 +145,6 @@ namespace E_shop_Api.Controllers
         public IActionResult GetDeleCart([FromForm] int Id)
         {
             string sql = "delete from cart where Id=@Id";
-            //DataTable dt = new DataTable();
-            //dt.Columns.Add("key", typeof(string));
-            //dt.Columns.Add("value", typeof(Int32));
-            //DataRow dr = dt.NewRow();
-            //dr["key"] = "@Id";
-            //dr["value"] = Id;
-            //dt.Rows.Add(dr);
 
             Cart.SetCarts(sql, DataTableCondition.DT("@Id", Id));
 
