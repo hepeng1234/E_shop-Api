@@ -176,8 +176,33 @@ namespace E_shop_Api.Controllers
 
             return Ok();
         }
-
-
+        /// <summary>
+        /// 登录
+        /// </summary>
+        /// <param name="Account"></param>
+        /// <param name="Pwd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult SignIn([FromForm] string Account,[FromForm] string Pwd)
+        {
+            string sql = "SELECT * FROM `users` where `Account`=@Account and Pwd=@Pwd";
+            var data=Users.GetUser(sql, DataTableCondition.DT("@Account", Account, "@Pwd", Pwd));
+            return Ok(data);
+        }
+        /// <summary>
+        /// 注册账号
+        /// </summary>
+        /// <param name="UserName"></param>
+        /// <param name="Account"></param>
+        /// <param name="Pwd"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Register([FromForm] string UserName, [FromForm] string Account,[FromForm] string Pwd)
+        {
+            string sql = "insert into users (UserName,Account,Pwd) values (@UserName,@Account,@Pwd)";
+            var data=Users.RegisterUser(sql, DataTableCondition.DT("@UserName", UserName, "@Account", Account, "@Pwd", Pwd));
+            return Ok(data);
+        }
 
     }
 }

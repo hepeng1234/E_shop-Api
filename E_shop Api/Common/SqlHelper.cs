@@ -67,7 +67,7 @@ namespace E_shop_Api.Common
             }
         }
         /// <summary>
-        /// 修改或删除某个满足条件的数据
+        /// 修改、删除或增加某个满足条件的数据
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="dataTable"></param>
@@ -82,6 +82,33 @@ namespace E_shop_Api.Common
                 }
                 conn.Open();
                 cmd.ExecuteNonQuery();
+            }
+        }
+        /// <summary>
+        /// 新增
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        public static int Insert(string sql, DataTable dataTable)
+        {
+            using (MySqlConnection conn = new MySqlConnection(MainClass.ConnStr))
+            {
+                MySqlCommand cmd = new MySqlCommand(sql, conn);
+                foreach (DataRow item in dataTable.Rows)
+                {
+                    cmd.Parameters.AddWithValue(item[0].ToString(), item[1]);
+                }
+                conn.Open();
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    return 1;
+                }
+                catch
+                {
+                    return 0;
+                }
             }
         }
     }
